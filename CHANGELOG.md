@@ -5,7 +5,7 @@ All notable changes to `mcp/sdk` will be documented in this file.
 0.8.0
 -----
 
-* `PromptResultFormatter` now delegates typed content arrays (`['type' => 'text', ...]` etc.) to the schema classes' `fromArray()`, so optional fields — `annotations` on all content types, `_meta` and an explicit `mimeType` on embedded resource contents — carry through to the emitted `PromptMessage` instead of being silently dropped. A missing resource `mimeType` still defaults to `text/plain`/`application/octet-stream` as before.
+* Prompt generators returning content as typed arrays (`['type' => 'text', ...]` etc.) no longer lose the optional fields: `annotations` on every content type, and `_meta` and an explicit `mimeType` on embedded resource contents, now carry through to the resulting `PromptMessage` instead of being silently dropped. A missing resource `mimeType` still defaults to `text/plain`/`application/octet-stream` as before.
 * Add `annotations` support to `ImageContent` (constructor, `fromArray()`, `fromFile()`, `fromString()`, `jsonSerialize()`), matching `TextContent` and `AudioContent`.
 
 0.7.0
