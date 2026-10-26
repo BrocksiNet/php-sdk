@@ -438,7 +438,7 @@ final class StatelessProtocol
         return new DiscoverResult(
             $this->supportedVersions,
             $this->configuration->capabilities,
-            $this->configuration->instructions,
+            $this->configuration->modernInstructions ?? $this->configuration->instructions,
         );
     }
 

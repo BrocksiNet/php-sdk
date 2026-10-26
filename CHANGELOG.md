@@ -2,6 +2,11 @@
 
 All notable changes to `mcp/sdk` will be documented in this file.
 
+0.9.1
+-----
+
+* Add `Builder::setModernInstructions()` for servers whose eras offer different features: `server/discover` answers with these instructions instead of the ones from `setInstructions()`, which `initialize` keeps using and `server/discover` falls back to when none are set. `Configuration::__construct()` takes them as optional last argument.
+
 0.9.0
 -----
 

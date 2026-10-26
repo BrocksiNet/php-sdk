@@ -1238,6 +1238,33 @@ class StatelessProtocolTest extends TestCase
         $this->assertSame(['flavour' => 'vanilla'], (array) $answer['body']['result']['capabilities']['extensions']['com.example/things']);
     }
 
+    #[TestDox('server/discover answers with the modern instructions when they are set')]
+    public function testDiscoverAnswersWithTheModernInstructions(): void
+    {
+        $protocol = Server::builder()
+            ->setServerInfo('test-server', '1.0.0')
+            ->setInstructions('Call enable_toolset first.')
+            ->setModernInstructions('Every tool is listed up front.')
+            ->buildStateless([ProtocolVersion::V2026_07_28]);
+
+        $result = self::call($protocol, 'server/discover')['body']['result'];
+
+        $this->assertSame('Every tool is listed up front.', $result['instructions']);
+    }
+
+    #[TestDox('server/discover falls back to the shared instructions when no modern ones are set')]
+    public function testDiscoverFallsBackToTheSharedInstructions(): void
+    {
+        $protocol = Server::builder()
+            ->setServerInfo('test-server', '1.0.0')
+            ->setInstructions('Call enable_toolset first.')
+            ->buildStateless([ProtocolVersion::V2026_07_28]);
+
+        $result = self::call($protocol, 'server/discover')['body']['result'];
+
+        $this->assertSame('Call enable_toolset first.', $result['instructions']);
+    }
+
     #[TestDox('listChanged is announced on server/discover when a notification bus delivers it')]
     public function testListChangedIsAdvertisedWithANotificationBus(): void
     {

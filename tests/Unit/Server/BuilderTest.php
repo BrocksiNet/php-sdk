@@ -329,6 +329,14 @@ final class BuilderTest extends TestCase
         $this->assertSame($builder, $builder->setLazyLoading(false));
     }
 
+    #[TestDox('setModernInstructions() returns the builder for fluent chaining')]
+    public function testSetModernInstructionsReturnsSelf(): void
+    {
+        $builder = Server::builder();
+
+        $this->assertSame($builder, $builder->setModernInstructions('Every tool is listed up front.'));
+    }
+
     #[TestDox('One builder configuration is resolved once, however many dispatchers come out of it')]
     public function testAssembledPartsAreSharedAcrossEras(): void
     {

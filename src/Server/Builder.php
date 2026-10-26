@@ -127,6 +127,8 @@ final class Builder
 
     private ?string $instructions = null;
 
+    private ?string $modernInstructions = null;
+
     private ?ProtocolVersion $protocolVersion = null;
 
     private ?CachePolicy $cachePolicy = null;
@@ -405,6 +407,21 @@ final class Builder
     public function setInstructions(?string $instructions): self
     {
         $this->instructions = $instructions;
+
+        return $this;
+    }
+
+    /**
+     * Configures the instructions the modern-era leg (2026-07-28) answers `server/discover` with.
+     *
+     * Use this when the two eras offer different features, for example tools that rely on a
+     * session and are not available on the stateless modern era. When unset, `server/discover`
+     * answers with the instructions from {@see self::setInstructions()}. The `initialize`
+     * handshake always answers with those.
+     */
+    public function setModernInstructions(?string $instructions): self
+    {
+        $this->modernInstructions = $instructions;
 
         return $this;
     }
@@ -1116,7 +1133,7 @@ final class Builder
         }
 
         $serverInfo = $this->serverInfo ?? new Implementation();
-        $configuration = new Configuration($serverInfo, $capabilities, $this->paginationLimit, $this->instructions, $this->protocolVersion);
+        $configuration = new Configuration($serverInfo, $capabilities, $this->paginationLimit, $this->instructions, $this->protocolVersion, $this->modernInstructions);
         $referenceHandler = $this->referenceHandler ?? new ReferenceHandler($container);
 
         $requestHandlers = array_merge($this->requestHandlers, [

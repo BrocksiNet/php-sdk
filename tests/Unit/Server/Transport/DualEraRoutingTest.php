@@ -57,6 +57,25 @@ final class DualEraRoutingTest extends TestCase
         $this->assertSame([ProtocolVersion::V2026_07_28->value], $answer['body']['result']['supportedVersions']);
     }
 
+    #[TestDox('each era answers with its own instructions when modern ones are set')]
+    public function testEachEraAnswersWithItsOwnInstructions(): void
+    {
+        $server = Server::builder()
+            ->setServerInfo('dual-era-server', '1.0.0')
+            ->setInstructions('Call enable_toolset first.')
+            ->setModernInstructions('Every tool is listed up front.')
+            ->build();
+
+        $handshake = $this->post($server, $this->handshake());
+        $discover = $this->post($server, $this->enveloped('server/discover'), [
+            'MCP-Protocol-Version' => ProtocolVersion::V2026_07_28->value,
+            'Mcp-Method' => 'server/discover',
+        ]);
+
+        $this->assertSame('Call enable_toolset first.', $handshake['body']['result']['instructions']);
+        $this->assertSame('Every tool is listed up front.', $discover['body']['result']['instructions']);
+    }
+
     #[TestDox('one tool answers both eras, from one registry')]
     public function testOneToolServesBothEras(): void
     {

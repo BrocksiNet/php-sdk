@@ -80,6 +80,17 @@ $server = Server::builder()
     ->setInstructions('This calculator supports basic arithmetic operations. Use the calculate tool for math operations and check the config resource for current settings.');
 ```
 
+The same instructions are sent on both protocol eras: in the `initialize` result and in the `server/discover` result.
+When the modern era (2026-07-28) offers different features, for example because some tools rely on a session,
+`setModernInstructions()` sets what `server/discover` answers with. `initialize` keeps the instructions from
+`setInstructions()`, and `server/discover` falls back to them when no modern instructions are set:
+
+```php
+$server = Server::builder()
+    ->setInstructions('Call enable_toolset to load the order tools for this session.')
+    ->setModernInstructions('All order tools are listed up front.');
+```
+
 ### Protocol Version
 
 By default the server negotiates the protocol revision with each client during the `initialize` handshake, and you do
@@ -324,6 +335,7 @@ $server = Server::builder()
 | `setServerInfo()` | name, version, description?, icons?, websiteUrl?, title? | Set server identity |
 | `setPaginationLimit()` | paginationLimit | Set max items per page |
 | `setInstructions()` | instructions | Set usage instructions |
+| `setModernInstructions()` | instructions | Set usage instructions for `server/discover`, falling back to `setInstructions()` |
 | `setCapabilities()` | serverCapabilities | Set the server capabilities and turn off automatic detection |
 | `enableExtension()` | ...extensions | Enable protocol extensions, see [Protocol extensions](../advanced/extensions.md) |
 | `setProtocolVersion()` | protocolVersion | Pin the handshake to one protocol revision |

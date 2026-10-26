@@ -109,6 +109,9 @@ Both legs come from **one** builder configuration — one registry, one set of h
 instances, one session manager. A tool registered once is reachable from both, and a change
 made through one is visible to the other.
 
+The instructions are shared too, unless the eras need different ones: `setModernInstructions()`
+sets what `server/discover` answers with, see [Instructions](server-builder.md#instructions).
+
 ## Over stdio
 
 `StdioTransport` serves both eras too, but stdio carries one client per process, so the era is

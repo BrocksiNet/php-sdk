@@ -25,10 +25,12 @@ use Mcp\Schema\ServerCapabilities;
 class Configuration
 {
     /**
-     * @param Implementation     $serverInfo      info about this MCP server application
-     * @param ServerCapabilities $capabilities    capabilities of this MCP server application
-     * @param int                $paginationLimit maximum number of items to return for list methods
-     * @param string|null        $instructions    instructions describing how to use the server and its features
+     * @param Implementation       $serverInfo         info about this MCP server application
+     * @param ServerCapabilities   $capabilities       capabilities of this MCP server application
+     * @param int                  $paginationLimit    maximum number of items to return for list methods
+     * @param string|null          $instructions       instructions describing how to use the server and its features
+     * @param ProtocolVersion|null $protocolVersion    revision the `initialize` handshake is pinned to, if any
+     * @param string|null          $modernInstructions instructions for the modern era (`server/discover`), falling back to $instructions when null
      */
     public function __construct(
         public readonly Implementation $serverInfo,
@@ -36,6 +38,7 @@ class Configuration
         public readonly int $paginationLimit = 50,
         public readonly ?string $instructions = null,
         public readonly ?ProtocolVersion $protocolVersion = null,
+        public readonly ?string $modernInstructions = null,
     ) {
     }
 
